@@ -1,0 +1,9 @@
+result
+result-*
+.direnv/
+
+# Site-local env files for infra-proxmox/lib/create-qemu-vm.sh.
+# Templates committed as *.example; populate the concrete file locally
+# (it is not consumed by nix, only by the bash VM-creation script).
+proxmox/*.env
+!proxmox/*.env.example
