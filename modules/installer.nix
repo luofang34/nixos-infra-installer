@@ -28,29 +28,31 @@
     '';
   };
 
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+  config = {
+    boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
 
-  services.qemuGuest.enable = true;
+    services.qemuGuest.enable = true;
 
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      PermitRootLogin = "prohibit-password";
+    services.openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        PermitRootLogin = "prohibit-password";
+      };
     };
+
+    users.users.root.openssh.authorizedKeys.keys = config.local.installer.sshKeys;
+
+    environment.systemPackages = with pkgs; [
+      git
+      tmux
+      htop
+      jq
+    ];
+
+    # The minimal ISO already provides a `nixos` user; anything else
+    # this ISO needs to do during install is driven remotely by
+    # nixos-anywhere, not baked in here.
+    system.stateVersion = "25.11";
   };
-
-  users.users.root.openssh.authorizedKeys.keys = config.local.installer.sshKeys;
-
-  environment.systemPackages = with pkgs; [
-    git
-    tmux
-    htop
-    jq
-  ];
-
-  # The minimal ISO already provides a `nixos` user; anything else this
-  # ISO needs to do during install is driven remotely by nixos-anywhere,
-  # not by anything baked in here.
-  system.stateVersion = "25.11";
 }
