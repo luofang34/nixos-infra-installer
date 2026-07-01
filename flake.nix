@@ -8,6 +8,7 @@
       installer     = import ./modules/installer.nix;
       nixos-builder = import ./modules/nixos-builder.nix;
       iso-builder   = import ./modules/iso-builder.nix;
+      nix-builder   = import ./modules/nix-builder.nix;
     };
   };
 }
